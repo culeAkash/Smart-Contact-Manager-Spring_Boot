@@ -13,29 +13,40 @@
 					<div class="my-card mt-3">
 						<h1 class="text-center">Register Here</h1>
 
-						<form th:action="@{/register}" method="post">
-
+						<form th:action="@{/register}" method="post" th:object="${user}"><!-- user object is passed from controller to map values given in signup form -->
+						<!-- All the form's inputs will go to /register by post method so we have to handle /register in Controller class -->
 							<!-- name field -->
 							<div class="mb-3">
-								<label for="name_field" class="form-label">Email address</label>
-									 <input type="text" class="form-control"
-									id="name_field" aria-describedby="emailHelp" placeholder="Enter your name here " required="required">
+								<label for="name_field" class="form-label">Name</label>
+									 <input type="text" class="form-control" name="name"
+									id="name_field" aria-describedby="emailHelp" placeholder="Enter your name here " required th:value="${user.name}"><!-- mapped input's value to user.name attribute -->
 							</div>
 							<!-- email field -->
 							<div class="mb-3">
 								<label for="email_field" class="form-label">Email address</label>
 									 <input type="email" class="form-control"
-									id="email_field" aria-describedby="emailHelp" placeholder="Enter your email here " required="required">
+									id="email_field" aria-describedby="emailHelp" placeholder="Enter your email here " required th:value="${user.email}" name="email">
 							</div>
 							<!-- password field -->
 							<div class="mb-3">
 								<label for="password_field" class="form-label">Password</label>
 									 <input type="password" class="form-control"
-									id="password_field" aria-describedby="emailHelp" placeholder="Enter your password here " required="required">
+									id="password_field" aria-describedby="emailHelp" placeholder="Enter your password here " required="required" name="password">
 							</div>
 							<!-- user about -->
 							<div class="mb-3">
-								<textarea  rows="8" class="form-control" placeholder="Enter something about yourself..."></textarea>
+								<textarea  rows="8" class="form-control" placeholder="Enter something about yourself..." th:value="${user.about}" name="about"></textarea>
+								<!-- Name of the inputs must be given same to the attributes name in the User class to get values correctly -->
+						
+							</div>
+							
+							<!-- Terms and conditions checkbox -->
+							<div class="mb-3 form-check text-center">
+								<input type="checkbox"
+									name="agreement"
+									class="form-check-input"
+									id="agreement" />
+									<label for="agreement">Terms and Conditions</label>
 							</div>
 							
 							<div class="container text-center">
