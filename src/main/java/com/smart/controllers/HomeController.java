@@ -1,5 +1,7 @@
 package com.smart.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.smart.dao.UserRepository;
 import com.smart.entities.User;
+import com.smart.helper.Message;
 
 @Controller
 public class HomeController {
@@ -44,39 +47,39 @@ public class HomeController {
 	// handler for /registering user
 	@PostMapping("/register")
 	public String registerUser(@ModelAttribute("user") User user,
-			@RequestParam(value = "agreement", defaultValue = "false") boolean agreement, ModelMap model) {// data
-																											// coming
-																											// from
-																											// signup
-																											// form will
-																											// get
-																											// mapped
-																											// into the
-																											// user
-																											// object
-																											// which
-																											// match
-																											// with the
-																											// names in
-																											// the user
-																											// object
+			@RequestParam(value = "agreement", defaultValue = "false") boolean agreement, ModelMap model,
+			HttpSession session) {// data coming from signup form will get mapped into the user object which match
+									// with the names in the user object
 
-		if (!agreement) {
-			System.out.println("Please accept terms and conditions");
-		}
+		try {
+			if (!agreement) {// if chcekbox is not checked then throw an exception
+//				System.out.println("Please accept terms and conditions");
+				throw new Exception("Please accept terms and conditions");
+			}
 
-		// set not defined attributes of user
-		user.setRole("ROLE_USER");
-		user.setEnabled(true);
-		// we will use password encoder later when we will use spring security here
+			// set not defined attributes of user
+			user.setRole("ROLE_USER");
+			user.setEnabled(true);
+			// we will use password encoder later when we will use spring security here
 
-		// add user to database
-		User user1 = this.userRepository.save(user);
-		System.out.println(user1);
-//		System.out.println("Agreement: "+agreement);
-//		System.out.println(user);
-//		model.addAttribute("user", user);
-		return "signup";
+			// add user to database
+			User user1 = this.userRepository.save(user);
+			System.out.println(user1);
+//			System.out.println("Agreement: "+agreement);
+//			System.out.println(user);
+			model.addAttribute("user", new User());
+			session.setAttribute("message", new Message("Registration Successful", "alert-success"));// if registation
+																										// successfull
+			return "signup";
+		} catch (Exception e) {
+			model.addAttribute("user", user);
+			session.setAttribute("message", new Message("Something went wrong!!! " + e.getMessage(), "alert-danger"));// exception
+																														// raised
+																														// hence
+																														// registration
+																														// unsuccessfull
+			return "signup";
+		} // now we have to show the message in views
 	}
 	/*
 	 * the checkbox value coming from the form is not part of the user object hence
