@@ -34,7 +34,7 @@ public class User {
 	private String email;
 
 	@NotBlank(message = "Password must not be empty")
-	@Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){4,12}$", message = "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,}$", message = "Password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
 	private String password;
 
 	private String role;
