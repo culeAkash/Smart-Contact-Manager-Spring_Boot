@@ -11,6 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -18,10 +22,21 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+
+	@NotBlank(message = "Name must not be blank") // VALIDATION THAT NAME MUST NOT BE black, and if blank that message
+													// must be printed
+	@Size(min = 2, max = 20, message = "Minimum 2 and Maximum 20 characters are allowed!!!")
 	private String name;
+
 	@Column(unique = true)
+	@NotBlank(message = "Email must not be blank")
+	@Email(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid Email!")
 	private String email;
+
+	@NotBlank(message = "Password must not be empty")
+	@Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){4,12}$", message = "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
 	private String password;
+
 	private String role;
 	private boolean enabled;
 	private String imageUrl;

@@ -1,11 +1,13 @@
 package com.smart.controllers;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,16 +48,26 @@ public class HomeController {
 
 	// handler for /registering user
 	@PostMapping("/register")
-	public String registerUser(@ModelAttribute("user") User user,
+	public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult result, // trigger validation
+																								// induced in user bean
 			@RequestParam(value = "agreement", defaultValue = "false") boolean agreement, ModelMap model,
-			HttpSession session) {// data coming from signup form will get mapped into the user object which match
-									// with the names in the user object
+			HttpSession session) {// data coming from signup form will get mapped into the user
+									// object which match
+		// with the names in the user object
 
 		try {
 			if (!agreement) {// if chcekbox is not checked then throw an exception
 //				System.out.println("Please accept terms and conditions");
 				throw new Exception("Please accept terms and conditions");
 			}
+
+			// if error in respect to validation is present
+			if (result.hasErrors()) {
+//				System.out.println("hello");
+				System.out.println("ERROR " + result.toString());
+				model.addAttribute("user", user);
+				return "signup";
+			} // reflect this validation in signup page
 
 			// set not defined attributes of user
 			user.setRole("ROLE_USER");
