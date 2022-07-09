@@ -50,7 +50,10 @@ public class MyConfig extends WebSecurityConfigurerAdapter {
 																			// admin role only
 				.antMatchers("/user/**").hasRole("USER")// user => USER role
 				.antMatchers("/**").permitAll()// other urls = ALL
-				.and().formLogin()// role decision will be form based login
+				.and().formLogin().loginPage("/signin")// role decision will be form based login,and added custom login
+														// page
+				.loginProcessingUrl("/dologin").defaultSuccessUrl("/user/index")// successfull url login page redirect
+//				.failureUrl("/login-fail")// login failure page
 				.and().csrf().disable();// csrf disabled
 		;
 	}

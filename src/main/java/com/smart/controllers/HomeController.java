@@ -106,4 +106,16 @@ public class HomeController {
 	 * it is handled seperately
 	 */
 
+	// user login controller
+	@GetMapping("/signin")
+	public String login(Model model) {
+		model.addAttribute("title", "Login - Smart Contact Manager");
+		return "login";
+	}
+
+	@GetMapping("/login-fail")
+	public String failLogin(Model model) {
+		model.addAttribute("title", "Login Failure - Smart Contact Manager");
+		return "login-fail";
+	}
 }
