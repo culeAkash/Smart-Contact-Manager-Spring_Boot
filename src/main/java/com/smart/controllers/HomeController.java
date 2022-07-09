@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -22,6 +23,9 @@ public class HomeController {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	// for home page
 	@GetMapping("/")
@@ -73,6 +77,10 @@ public class HomeController {
 			user.setRole("ROLE_USER");
 			user.setEnabled(true);
 			// we will use password encoder later when we will use spring security here
+
+			// takes password from the form encode the password and then put it to the user
+			// object
+			user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
 			// add user to database
 			User user1 = this.userRepository.save(user);

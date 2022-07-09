@@ -17,10 +17,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// fetching user from database
 		User user = this.repo.getUserByUserName(username);
+		// if not such user found
 		if (user == null) {
 			throw new UsernameNotFoundException("Could not found user");
 		}
 
+		// return details of the customer
 		CustomUserDetails customUser = new CustomUserDetails(user);
 		return customUser;
 	}
