@@ -11,6 +11,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
     <link rel="stylesheet" th:href="@{/css/styles.css}" /><!-- Connectd personal CSS -->
 
     <title th:text="${title}">Base page</title>
@@ -43,7 +45,29 @@
 	<!-- NavBar ENded -->
 
     
-    <div th:replace="${content}"></div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+    
+    	<span onclick="toggleSidebar()" class="cross-btn">&times;</span><!-- toggle is called when clicked -->
+    
+    	<a href="#" class="item"> <i class="fa fa-home" aria-hidden="true"></i>  Home</a>
+    	<a href="#" class="item"> <i class="fa fa-id-card-alt" aria-hidden="true"></i>  View Contacts</a>
+    	<a href="#" class="item"> <i class="fa fa-pencil-alt" aria-hidden="true"></i>  Add Contact</a>
+    	<a href="#" class="item"> <i class="fa fa-user-circle" aria-hidden="true"></i>  Profile</a>
+    	<a href="#" class="item"> <i class="fa fa-cogs" aria-hidden="true"></i>  Settings</a>
+    	<a href="#" class="item"> <i class="fa fa-sign-out-alt" aria-hidden="true"></i>  Logout</a>
+    	<div class="divider"></div>
+    
+    </div>
+    
+    <!-- content -->
+    <div class="content">
+    
+    	<i onclick="toggleSidebar()" class="fas fa-bars m-3" style="cursor: pointer;" aria-hidden="true"></i><!-- toggle is called when clicked -->
+    
+    	<div th:replace="${content}"></div>	
+    
+    </div>
     
     
     
