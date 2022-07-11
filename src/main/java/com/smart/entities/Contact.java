@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Contact {
 
@@ -23,12 +25,20 @@ public class Contact {
 	@Column(length = 1000)
 	private String description;
 
+	@JsonBackReference
 	@ManyToOne
 	private User user;// foreign key of user in Contact
 	// A contact can have only one user
 
 	public Contact() {
 		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Contact [cid=" + this.cid + ", name=" + this.name + ", nickName=" + this.nickName + ", work="
+				+ this.work + ", email=" + this.email + ", phone=" + this.phone + ", imageUrl=" + this.imageUrl
+				+ ", description=" + this.description + ", user=" + this.user + "]";
 	}
 
 	public int getCid() {
