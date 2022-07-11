@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -15,12 +19,26 @@ public class Contact {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int cid;
+
+	@NotBlank(message = "Name must not be blank") // VALIDATION THAT NAME MUST NOT BE black, and if blank that message
+	// must be printed
+	@Size(min = 2, max = 20, message = "Minimum 2 and Maximum 20 characters are allowed!!!")
 	private String name;
+
+	@Size(min = 2, max = 20, message = "Minimum 2 and Maximum 20 characters are allowed!!!")
 	private String nickName;
+
 	private String work;
+
 	@Column(unique = true)
+	@NotBlank(message = "Email must not be blank")
+	@Email(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid Email!")
 	private String email;
+
+	@NotBlank(message = "Password must not be empty")
+	@Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}", message = "Invalid Phone Number")
 	private String phone;
+
 	private String imageUrl;
 	@Column(length = 1000)
 	private String description;
@@ -32,13 +50,6 @@ public class Contact {
 
 	public Contact() {
 		super();
-	}
-
-	@Override
-	public String toString() {
-		return "Contact [cid=" + this.cid + ", name=" + this.name + ", nickName=" + this.nickName + ", work="
-				+ this.work + ", email=" + this.email + ", phone=" + this.phone + ", imageUrl=" + this.imageUrl
-				+ ", description=" + this.description + ", user=" + this.user + "]";
 	}
 
 	public int getCid() {

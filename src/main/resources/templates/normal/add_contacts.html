@@ -11,6 +11,16 @@
 		<!-- Add contact form -->
 		<div class="card mr-4">
 			<div class="card-body">
+			
+				<div th:if="${session.message}"
+							th:classappend="${session.message.type}" class="alert"
+							role="alert">
+							<p class="text-center" th:text="${session.message.content}">
+							</p>
+
+							<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+
+						</div>
 
 				<h1 class="text-center">Add Contact</h1>
 
@@ -37,8 +47,9 @@
 									</div>
 
 									<input type="text" name="name" placeholder="Enter Name here"
-										class="form-control" />
+										class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" th:value="${contact.name}" />
 
+									<div class="invalid-feedback" th:each="e: ${#fields.errors('name')}" th:text=${e}></div>
 								</div>
 
 								<!-- field for second name -->
@@ -55,8 +66,9 @@
 									</div>
 
 									<input type="text" name="nickName"
-										placeholder="Enter Nick Name here" class="form-control" />
+										placeholder="Enter Nick Name here" class="form-control" th:classappend="${#fields.hasErrors('nickName') ? 'is-invalid' : ''}" th:value="${contact.nickName}" />
 
+									<div class="invalid-feedback" th:each="e: ${#fields.errors('nickName')}" th:text=${e}></div>
 								</div>
 
 
@@ -74,8 +86,8 @@
 									</div>
 
 									<input type="text" name="email" placeholder="Enter Email here"
-										class="form-control" />
-
+										class="form-control" th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}" th:value="${contact.email}" />
+									<div class="invalid-feedback" th:each="e: ${#fields.errors('email')}" th:text=${e}></div>
 								</div>
 
 								<!-- field for work here -->
@@ -110,8 +122,8 @@
 									</div>
 
 									<input type="text" name="phone"
-										placeholder="Enter Phone Number here" class="form-control" />
-
+										placeholder="Enter Phone Number here" class="form-control" th:classappend="${#fields.hasErrors('phone') ? 'is-invalid' : ''}" th:value="${contact.phone}"  />
+									<div class="invalid-feedback" th:each="e: ${#fields.errors('phone')}" th:text=${e}></div>
 								</div>
 
 								<!-- Image field -->
