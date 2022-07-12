@@ -25,18 +25,18 @@ public class Contact {
 	@Size(min = 2, max = 20, message = "Minimum 2 and Maximum 20 characters are allowed!!!")
 	private String name;
 
-	@Size(min = 2, max = 20, message = "Minimum 2 and Maximum 20 characters are allowed!!!")
 	private String nickName;
 
+	@NotBlank(message = "Please add suitable Work Title")
 	private String work;
 
 	@Column(unique = true)
 	@NotBlank(message = "Email must not be blank")
-	@Email(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Invalid Email!")
+	@Email(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Please Enter Valid Email!")
 	private String email;
 
-	@NotBlank(message = "Password must not be empty")
-	@Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}", message = "Invalid Phone Number")
+	@NotBlank(message = "Phone Number must not be empty")
+	@Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}", message = "Please Enter Valid Phone Number")
 	private String phone;
 
 	private String imageUrl;
