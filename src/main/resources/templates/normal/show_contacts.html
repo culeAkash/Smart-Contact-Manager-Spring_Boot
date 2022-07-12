@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8" />
+<title>Document</title>
+</head>
+<body>
+	<section>
+		<div class="card mr-4">
+
+			<div class="card-body">
+
+				<h1 class="text-center pb-3">Your Contacts</h1>
+				
+				<!-- table me hmlog name(nickname),email,phone number,image aur id dikhayenge -->
+				
+				<div th:if="${session.message}"
+							th:classappend="${session.message.type}" class="alert"
+							role="alert">
+							
+							<div class="text-center">
+							<span  th:text="${session.message.content}">
+							</span><span><a style="text-decoration: none;color: green;" onMouseOver="this.style.color='#009688'" onMouseOut="this.style.color='green'" th:href="@{/user/add-contact}">here</a></span>
+							</div>
+							
+							
+
+							<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+							</div>
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">#ID</th>
+							<th scope="col">Name</th>
+							<th scope="col">Email</th>
+							<th scope="col">Phone</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						
+					
+						<!-- loop lagake yeh tr ko repeat karenge jitna contact h user ka -->
+						<tr th:each="c: ${contacts}">
+							<th scope="row" th:text="${'SCM2022'+c.cId}">1</th>
+							<td th:text="${c.name+'('+c.nickName+')'}">Mark</td>
+							<td th:text="${c.email}">Otto</td>
+							<td th:text="${c.phone}">@mdo</td>
+							<td>
+							
+							<!-- Action me 2 button rahega delete aur edit ke liye  -->
+								<button class="btn-outline-danger btn btn-sm">Delete</button>
+								<button class="btn-warning btn btn-sm">Update</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+	</section>
+</body>
+</html>

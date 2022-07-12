@@ -11,14 +11,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 public class Contact {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int cid;
+	private int cId;
 
 	@NotBlank(message = "Name must not be blank") // VALIDATION THAT NAME MUST NOT BE black, and if blank that message
 	// must be printed
@@ -30,7 +28,6 @@ public class Contact {
 	@NotBlank(message = "Please add suitable Work Title")
 	private String work;
 
-	@Column(unique = true)
 	@NotBlank(message = "Email must not be blank")
 	@Email(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Please Enter Valid Email!")
 	private String email;
@@ -43,7 +40,6 @@ public class Contact {
 	@Column(length = 1000)
 	private String description;
 
-	@JsonBackReference
 	@ManyToOne
 	private User user;// foreign key of user in Contact
 	// A contact can have only one user
@@ -52,12 +48,19 @@ public class Contact {
 		super();
 	}
 
-	public int getCid() {
-		return this.cid;
+	@Override
+	public String toString() {
+		return "Contact [cId=" + this.cId + ", name=" + this.name + ", nickName=" + this.nickName + ", work="
+				+ this.work + ", email=" + this.email + ", phone=" + this.phone + ", imageUrl=" + this.imageUrl
+				+ ", description=" + this.description + "]";
 	}
 
-	public void setCid(int cid) {
-		this.cid = cid;
+	public int getcId() {
+		return this.cId;
+	}
+
+	public void setcId(int cId) {
+		this.cId = cId;
 	}
 
 	public String getName() {

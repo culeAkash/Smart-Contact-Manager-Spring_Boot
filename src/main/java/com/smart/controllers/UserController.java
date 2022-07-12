@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.smart.dao.ContactRepository;
 import com.smart.dao.UserRepository;
 import com.smart.entities.Contact;
 import com.smart.entities.User;
@@ -35,6 +37,9 @@ public class UserController {
 
 	@Autowired
 	UserRepository repo;
+
+	@Autowired
+	private ContactRepository contactRepo;
 
 //	@ModelAttribute // now this method will run for all handlers
 	public User addUser(Model model, Principal principal) {
@@ -75,9 +80,9 @@ public class UserController {
 
 	// handler to process contact form
 	@PostMapping("/process-contact")
-	public String processContact(@Valid @ModelAttribute("contact") Contact contact,
+	public String processContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result,
 			@RequestParam("image") MultipartFile file, // for storing imagee file
-			BindingResult result, Model model, Principal principal, HttpSession session) {
+			Model model, Principal principal, HttpSession session) {
 
 		// sending user name to base
 		User loggedInUser = this.addUser(model, principal);
@@ -104,7 +109,7 @@ public class UserController {
 			} else {
 
 				String fileNameTemp = file.getOriginalFilename();
-				String fileName = fileNameTemp.substring(0, fileNameTemp.indexOf('.')) + contact.getCid()
+				String fileName = fileNameTemp.substring(0, fileNameTemp.indexOf('.')) + contact.getcId()
 						+ fileNameTemp.substring(fileNameTemp.indexOf('.'));
 
 				// adding filename to database
@@ -127,6 +132,7 @@ public class UserController {
 			// add the contact to contact list of the user
 			userByUserName.getContacts().add(contact);
 			// update the user
+			System.out.println(userByUserName.getContacts());
 			this.repo.save(userByUserName);
 
 			model.addAttribute("contact", new Contact());
@@ -140,9 +146,35 @@ public class UserController {
 			model.addAttribute("contact", contact);
 			// if any error show this
 			session.setAttribute("message", new Message("Something went wrong!!! " + e.getMessage(), "alert-danger"));
+			return "normal/add_contacts";
 		}
 
-		return "normal/add_contacts";
+	}
+
+	// hadnler for show contacts
+	@GetMapping("/show-contacts")
+	public String showContacts(Model model, Principal principal, HttpSession session) {
+		User loggedInUser = this.addUser(model, principal);
+		model.addAttribute("title", "Contacts - " + loggedInUser.getName());
+
+		// Contact ki list bhejni h, Principal ka use karke bhej sakte h via user but
+		// hmlog yaha ContactRepo banake karenge
+		String username = principal.getName();
+		User user = this.repo.getUserByUserName(username);
+		System.out.println(user);
+
+		// Sirf uss user ka contact nikalna h jo logged in h, uske liye ek custom method
+		// bana repo me
+		List<Contact> contacts = this.contactRepo.findContactsByUser(user.getId());
+		if (contacts.isEmpty()) {
+			model.addAttribute("contacts", contacts);
+			session.setAttribute("message", new Message("No Contacts here yet, Add ", "alert-warning"));
+			return "normal/show_contacts";
+		}
+		System.out.println(contacts);
+		model.addAttribute("contacts", contacts);
+
+		return "normal/show_contacts";
 	}
 
 }
