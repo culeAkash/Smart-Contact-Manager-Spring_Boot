@@ -6,18 +6,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -152,8 +155,10 @@ public class UserController {
 	}
 
 	// hadnler for show contacts
-	@GetMapping("/show-contacts")
-	public String showContacts(Model model, Principal principal, HttpSession session) {
+	// contact per page= n[10]
+	// Current Page = page
+	@GetMapping("/show-contacts/{page}")
+	public String showContacts(@PathVariable("page") int page, Model model, Principal principal, HttpSession session) {
 		User loggedInUser = this.addUser(model, principal);
 		model.addAttribute("title", "Contacts - " + loggedInUser.getName());
 
@@ -163,14 +168,25 @@ public class UserController {
 		User user = this.repo.getUserByUserName(username);
 		System.out.println(user);
 
+		// contact per page= n[10]
+		// Current Page = page
+		Pageable pageable = PageRequest.of(page, 3);// PageRequest is a child class of Pageable,now pass pageable to
+													// contactrepo function as it has now
+		// both current page and page size
+
 		// Sirf uss user ka contact nikalna h jo logged in h, uske liye ek custom method
 		// bana repo me
-		List<Contact> contacts = this.contactRepo.findContactsByUser(user.getId());
+		Page<Contact> contacts = this.contactRepo.findContactsByUser(user.getId(), pageable);
 		if (contacts.isEmpty()) {
 			model.addAttribute("contacts", contacts);
 			session.setAttribute("message", new Message("No Contacts here yet, Add ", "alert-warning"));
 			return "normal/show_contacts";
 		}
+
+		// We get two more attributes for implementing pagination in show contacts page
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", contacts.getTotalPages());
+
 		System.out.println(contacts);
 		model.addAttribute("contacts", contacts);
 

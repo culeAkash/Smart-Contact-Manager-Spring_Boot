@@ -1,7 +1,7 @@
 package com.smart.dao;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +13,13 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
 
 	// user ka id leke contacts return karega
 
+	// Ab yaha pe pagination implement karna h
+	// We need two things
+	// Page number[n]
+	// Contacts per page
 	@Query("from Contact c where c.user.id=:userId")
-	public List<Contact> findContactsByUser(@Param("userId") int userId);
+	public Page<Contact> findContactsByUser(@Param("userId") int userId, Pageable pageable);// Pageable object will
+																							// return contacts according
+																							// to page number and
+																							// respective contacts
 }
