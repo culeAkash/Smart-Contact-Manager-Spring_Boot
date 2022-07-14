@@ -108,7 +108,9 @@ public class UserController {
 			// Processing and Uploading image...
 			if (file.isEmpty()) {
 				// if file is empty
+				// add default image
 				System.out.println("Image is empty");
+				contact.setImageUrl("contact.png");
 			} else {
 
 				String fileNameTemp = file.getOriginalFilename();
@@ -191,6 +193,21 @@ public class UserController {
 		model.addAttribute("contacts", contacts);
 
 		return "normal/show_contacts";
+	}
+
+	// Handler for showing particular contact details
+	@GetMapping("/contact-info/{cId}")
+	public String info(@PathVariable("cId") int cId, Model model, Principal principal) {
+		this.addUser(model, principal);
+		// get contact according to cID
+//		Contact contact = this.contactRepo.getContactById(cId);
+
+		// We can get contact by id directly from contactRepo
+		Contact contact = this.contactRepo.getById(cId);
+		model.addAttribute("title", "Contact - " + contact.getName());
+		model.addAttribute("contact", contact);
+
+		return "normal/contact_info";
 	}
 
 }

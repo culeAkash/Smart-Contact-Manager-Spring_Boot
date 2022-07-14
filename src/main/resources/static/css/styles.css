@@ -100,3 +100,13 @@ body{
 	font-size: 36px;
 	cursor: pointer;
 }
+
+
+/*Style for Contacts page Profile picture*/
+.profile_picture{
+	width: 35px;
+	height: 35px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-right: 3px;
+}

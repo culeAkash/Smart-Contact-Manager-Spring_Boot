@@ -47,9 +47,26 @@
 
 						<!-- loop lagake yeh tr ko repeat karenge jitna contact h user ka -->
 						<tr th:each="c: ${contacts}">
+						
 							<th scope="row" th:text="${'SCM2022'+c.cId}">1</th>
-							<td th:text="${c.name+'('+c.nickName+')'}">Mark</td>
+							
+							<!-- Now showing contacts images -->
+							<td >
+							<!-- Add image here -->
+							<!-- Have to resize the image -->
+							<img class="profile_picture" th:src="@{'/images/' + ${c.imageUrl}}" alt="Profile Picture" />
+							
+							<!-- Showing info about specific contact now -->
+							<a th:href="@{'/user/contact-info/'+${c.cId}}"><span th:text="${c.name+'('+c.nickName+')'}"></span></a>
+							
+							
+							
+							</td>
+							
+							
 							<td th:text="${c.email}">Otto</td>
+							
+							
 							<td th:text="${c.phone}">@mdo</td>
 							<td>
 								<!-- Action me 2 button rahega delete aur edit ke liye  -->
@@ -79,7 +96,7 @@
 								<!-- Current page will get highlighted -->
 								<!-- On clicking a page number that page will be visible -->
 
-						<li th:if="${currentPage+1!=totalPages}" class="page-item"><a class="page-link" th:href="@{'/user/show-contacts/'+${currentPage+1}}">Next</a></li><!-- If the current page is 0 and totalPages are 1 then dont show -->
+						<li th:if="${currentPage+1!=totalPages}" class="page-item" ><a class="page-link" th:href="@{'/user/show-contacts/'+${currentPage+1}}">Next</a></li><!-- If the current page is 0 and totalPages are 1 then dont show -->
 						<!-- Show only when curreentPage + 1 is not equal to totalPages -->
 					</ul>
 				</nav>

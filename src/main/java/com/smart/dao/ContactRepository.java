@@ -22,4 +22,7 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
 																							// return contacts according
 																							// to page number and
 																							// respective contacts
+
+//	@Query("select c from Contact c where c.cId =:cId")
+//	public Contact getContactById(@Param("cId") int cId);
 }
