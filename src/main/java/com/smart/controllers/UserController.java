@@ -204,8 +204,27 @@ public class UserController {
 
 		// We can get contact by id directly from contactRepo
 		Contact contact = this.contactRepo.getById(cId);
-		model.addAttribute("title", "Contact - " + contact.getName());
-		model.addAttribute("contact", contact);
+
+		/*
+		 * We have a bug at this point, If the user tries to access some random contact
+		 * by giving some random id in the url and if contact with that id is present in
+		 * database then he can also see it which is a major security problem
+		 *
+		 * Now, we will send contact to the contact info page only if contact's user is
+		 * same as session user
+		 */
+
+		String userName = principal.getName();
+		User user = this.repo.getUserByUserName(userName);
+
+		// We will send data only of user== contact's user
+
+		if (user.getId() == contact.getUser().getId()) {
+			model.addAttribute("contact", contact);
+			model.addAttribute("title", "Contact - " + contact.getName());
+		} else {
+			model.addAttribute("title", "Not Authorized");
+		}
 
 		return "normal/contact_info";
 	}

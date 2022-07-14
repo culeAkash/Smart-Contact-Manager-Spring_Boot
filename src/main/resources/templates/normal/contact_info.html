@@ -8,7 +8,8 @@
 <body>
 	<section>
 
-		<div class="card mr-4">
+		<!-- If contact is passed from the controller to the page -->
+		<div class="card mr-4" th:if="${contact}">
 
 			<div class="card-body">
 
@@ -27,27 +28,27 @@
 
 					<table class="table mt-4">
 						<thead>
-						
-						<!-- ID -->
+
+							<!-- ID -->
 							<tr>
 								<th scope="col">#ID</th>
 								<th scope="col" th:text="${'SCM2022'+contact.cId}">First</th>
 							</tr>
 						</thead>
 						<tbody>
-						
+
 							<!-- Email -->
 							<tr>
 								<th scope="row">Email</th>
 								<td th:text="${contact.email}"></td>
 							</tr>
-							
+
 							<!-- Phone -->
 							<tr>
 								<th scope="row">Phone Number</th>
 								<td th:text="${contact.phone}"></td>
 							</tr>
-							
+
 							<!-- Work -->
 							<tr>
 								<th scope="row">Work</th>
@@ -75,13 +76,20 @@
 						<button class="btn-outline-danger btn btn-md">Delete</button>
 						<button class="btn-warning btn btn-md">Update</button>
 					</div>
-					
-					
-					
+
+
+
 				</div>
 
 			</div>
 
+		</div>
+
+		<!-- If contact is not passed from the controller to the page -->
+		<div class="container">
+			<h3 class="text-center pd-3 bg-danger text-white"
+				th:unless="${contact}">Your are authorized to see this
+				contact...</h3>
 		</div>
 
 
