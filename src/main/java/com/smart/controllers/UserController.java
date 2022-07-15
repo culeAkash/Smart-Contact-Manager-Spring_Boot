@@ -179,17 +179,22 @@ public class UserController {
 		// Sirf uss user ka contact nikalna h jo logged in h, uske liye ek custom method
 		// bana repo me
 		Page<Contact> contacts = this.contactRepo.findContactsByUser(user.getId(), pageable);
-		if (contacts.isEmpty()) {
-			model.addAttribute("contacts", contacts);
-			session.setAttribute("message", new Message("No Contacts here yet, Add ", "alert-warning"));
-			return "normal/show_contacts";
-		}
 
 		// We get two more attributes for implementing pagination in show contacts page
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", contacts.getTotalPages());
 
+		if (contacts.isEmpty()) {
+			model.addAttribute("contacts", contacts);
+			// block will specify if we have to show warning if no contacts are present and
+			// also if block is true we wont show any table or navigation pagination
+			model.addAttribute("block", true);
+			session.setAttribute("message", new Message("No Contacts here yet, Add ", "alert-warning"));
+			return "normal/show_contacts";
+		}
+
 		System.out.println(contacts);
+		model.addAttribute("block", false);
 		model.addAttribute("contacts", contacts);
 
 		return "normal/show_contacts";

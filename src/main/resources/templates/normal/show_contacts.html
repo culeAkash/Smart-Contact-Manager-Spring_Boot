@@ -15,7 +15,7 @@
 
 				<!-- table me hmlog name(nickname),email,phone number,image aur id dikhayenge -->
 
-				<div th:if="${session.message}"
+				<div th:if="${block==true}"
 					th:classappend="${session.message.type}" class="alert" role="alert">
 
 					<div class="text-center">
@@ -31,7 +31,7 @@
 					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
 				</div>
 
-				<table th:ulsee="${session.message}" class="table">
+				<table th:if="${block==false}" class="table">
 					<thead>
 						<tr>
 							<th scope="col">#ID</th>
@@ -82,7 +82,7 @@
 				1. Page number
 				2. Total no of pages
 				 -->
-				<nav aria-label="Page navigation example">
+				<nav th:if="${block==false}" aria-label="Page navigation example">
 
 					<ul class="pagination">
 
