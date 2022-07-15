@@ -93,7 +93,17 @@
 								<!-- Now we will add delete functionality of a contact  th:href="@{'/user/delete-contact/'+${c.cId}}"-->
 								<!-- In order to send data to a js function using thymeleaf use || -->
 								<a href="#" th:onclick="|deleteContact(${c.cId})|" class="btn-outline-danger btn btn-sm">Delete</a>
+								
+								
+								<!-- If we directly click on this button it will send get request bound it inside a form for post request -->
+								<form class="mt-2" th:action="@{'/user/update-contact/'+${c.cId}}" method="post">
+								
 								<button class="btn-warning btn btn-sm">Update</button>
+								
+								</form>								
+								
+
+
 							</td>
 						</tr>
 					</tbody>

@@ -281,4 +281,20 @@ public class UserController {
 
 	}
 
+	// Handler to hadnle update contact
+	// Using postmapping, now user can only call this page by clicking on the button
+	// but not by writing url manually, solving a security bug
+	@PostMapping("/update-contact/{cId}")
+	public String updateContact(@PathVariable("cId") int cId, Model model, Principal principal) {
+		User loggedInUser = this.addUser(model, principal);
+		model.addAttribute("title", "Contacts - " + loggedInUser.getName());
+
+		Contact contact = this.contactRepo.findById(cId).get();
+		model.addAttribute("title", "Update Contact - " + contact.getName());
+		model.addAttribute("contact", contact);
+
+		return "normal/update_contact";
+
+	}
+
 }
