@@ -1,11 +1,13 @@
 package com.smart.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -190,6 +192,10 @@ public class UserController {
 			// also if block is true we wont show any table or navigation pagination
 			model.addAttribute("block", true);
 			session.setAttribute("message", new Message("No Contacts here yet, Add ", "alert-warning"));
+
+			// if no contact don't show the delete pop-up
+			session.removeAttribute("delete");
+
 			return "normal/show_contacts";
 		}
 
@@ -232,6 +238,47 @@ public class UserController {
 		}
 
 		return "normal/contact_info";
+	}
+
+	// Handler for deleting contacts
+	@GetMapping("/delete-contact/{cId}")
+	public String deleteContact(@PathVariable("cId") int cId, Principal principal, HttpSession session)
+			throws IOException {
+
+		Optional<Contact> contactOptional = this.contactRepo.findById(cId);
+		Contact contact = contactOptional.get();
+
+		// We want that user of only that contact can delete the contact and no other
+		// user
+		String userName = principal.getName();
+		User user = this.repo.getUserByUserName(userName);
+
+		// Now if this user is same as the contact's user then he can delete it
+		if (user.getId() == contact.getUser().getId()) {
+//			contact.setUser(null)
+			this.contactRepo.delete(contact);
+			session.setAttribute("delete", new Message("Contact Deleted Successfully...", "alert-success"));
+
+			// delete image from database too
+			// Don't delete the image if it is the default image
+			if (contact.getImageUrl() != null && !contact.getImageUrl().equals("contact.png")) {
+				// get saved folder name
+				File saveFile = new ClassPathResource("/static/images").getFile();
+
+				// get file name
+				String fileName = contact.getImageUrl();
+
+				// make complete path of image
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + fileName);
+				Files.delete(path);
+			}
+
+			return "redirect:/user/show-contacts/0";
+		}
+
+		session.setAttribute("delete", new Message("Your are not authorized to delete this contact..", "alert-danger"));
+		return "redirect:/user/show-contacts/0";
+
 	}
 
 }

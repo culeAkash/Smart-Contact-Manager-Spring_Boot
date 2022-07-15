@@ -30,6 +30,24 @@
 
 					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
 				</div>
+				
+				
+				<!-- If deleting is done then this message is shown -->
+				<div th:if="${session.delete}"
+					th:classappend="${session.delete.type}" class="alert" role="alert">
+
+					<div class="text-center">
+						<span th:text="${session.delete.content}"> </span>
+					</div>
+
+
+
+					<th:block th:text="${#session.removeAttribute('delete')}"></th:block>
+				</div>
+				
+				
+				
+				<!-- contact table -->
 
 				<table th:if="${block==false}" class="table">
 					<thead>
@@ -70,7 +88,11 @@
 							<td th:text="${c.phone}">@mdo</td>
 							<td>
 								<!-- Action me 2 button rahega delete aur edit ke liye  -->
-								<button class="btn-outline-danger btn btn-sm">Delete</button>
+								
+								
+								<!-- Now we will add delete functionality of a contact  th:href="@{'/user/delete-contact/'+${c.cId}}"-->
+								<!-- In order to send data to a js function using thymeleaf use || -->
+								<a href="#" th:onclick="|deleteContact(${c.cId})|" class="btn-outline-danger btn btn-sm">Delete</a>
 								<button class="btn-warning btn btn-sm">Update</button>
 							</td>
 						</tr>
@@ -105,5 +127,7 @@
 
 		</div>
 	</section>
+	
+	</script>
 </body>
 </html>

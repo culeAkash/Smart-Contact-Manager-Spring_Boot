@@ -88,5 +88,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:src="@{/js/script.js}"></script><!-- Connected personal js -->
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
+	<script>
+		//When delete button is clicked this method will get called
+		function deleteContact(cid){
+			
+			swal({
+				  title: "Are you sure?",
+				  text: "You want to delete this contact",
+				  icon: "warning",
+				  buttons: true,
+				  dangerMode: true,
+				})
+				.then((willDelete) => {
+				  if (willDelete) {
+				    window.location = "/user/delete-contact/"+cid;
+				  }
+				  else {
+					    swal("Your contact is safe!");
+					  }
+				});
+			
+		}
+		</script>
   </body>
 </html>

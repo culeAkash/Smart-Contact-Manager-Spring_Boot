@@ -73,7 +73,7 @@
 
 					<!-- Buttons for update and delete contact -->
 					<div class="mt-4">
-						<button class="btn-outline-danger btn btn-md">Delete</button>
+						<a href="#" th:onclick="|deleteContact(${contact.cId})|" class="btn-outline-danger btn btn-md">Delete</a>
 						<button class="btn-warning btn btn-md">Update</button>
 					</div>
 
