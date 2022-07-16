@@ -81,6 +81,7 @@ public class HomeController {
 			// takes password from the form encode the password and then put it to the user
 			// object
 			user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+			user.setImageUrl("user.png");
 
 			// add user to database
 			User user1 = this.userRepository.save(user);

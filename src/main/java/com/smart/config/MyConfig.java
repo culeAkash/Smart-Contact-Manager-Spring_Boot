@@ -52,7 +52,7 @@ public class MyConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**").permitAll()// other urls = ALL
 				.and().formLogin().loginPage("/signin")// role decision will be form based login,and added custom login
 														// page
-				.loginProcessingUrl("/dologin").defaultSuccessUrl("/user/index")// successfull url login page redirect
+				.loginProcessingUrl("/dologin").defaultSuccessUrl("/user/profile")// successfull url login page redirect
 //				.failureUrl("/login-fail")// login failure page
 				.and().csrf().disable();// csrf disabled
 		;

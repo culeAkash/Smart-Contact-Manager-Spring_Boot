@@ -1,24 +1,43 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
 <head>
 <meta charset="UTF-8" />
-<title></title>
+<title th:text="${title}"></title>
 </head>
 <body>
 
 	<section>
-		<h1>Welcome User</h1>
-		<h1>This is your private dashboard</h1>
 
-		<h1>
-			User name <span th:text="${user.name}"></span>
-		</h1>
-		<h1>
-			User email <span th:text="${user.email}"></span>
-		</h1>
-		<h1>
-			<a th:href="@{/logout}">Logout</a>
-		</h1>
+
+
+		<div class="card">
+
+			<div class="card-body">
+
+				<div class="container text-center">
+
+					<!-- Profile Image  -->
+					<img style="height: 200px; width: 200px;" class="profile_picture"
+						th:src="@{'/images/' + ${user.imageUrl}}" alt="Profile Picture" />
+						
+						
+						
+					<h1 class="text-center mt-3 text-secondary font-italic">
+						Start Adding your Contacts
+					</h1>
+					
+					
+					<a th:href="@{/user/add-contact}" class="btn btn-outline-primary btn-block text-uppercase mt-4">Add new Contact</a>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+
 	</section>
 
 </body>
