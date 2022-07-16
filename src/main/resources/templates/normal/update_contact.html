@@ -32,6 +32,11 @@
 
 							<form th:action="@{/user/process-update}" th:object="${contact}"
 								enctype="multipart/form-data" method="post" class="mt-2">
+								
+								
+								
+								<!-- Hidden input for id of the contact -->
+								<input type="hidden" th:value=${contact.cId} name="cId" />
 
 								<!-- Field for first name -->
 								<div class="input-group">

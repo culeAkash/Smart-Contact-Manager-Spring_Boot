@@ -286,14 +286,87 @@ public class UserController {
 	// but not by writing url manually, solving a security bug
 	@PostMapping("/update-contact/{cId}")
 	public String updateContact(@PathVariable("cId") int cId, Model model, Principal principal) {
-		User loggedInUser = this.addUser(model, principal);
-		model.addAttribute("title", "Contacts - " + loggedInUser.getName());
+		this.addUser(model, principal);
 
 		Contact contact = this.contactRepo.findById(cId).get();
 		model.addAttribute("title", "Update Contact - " + contact.getName());
 		model.addAttribute("contact", contact);
 
 		return "normal/update_contact";
+
+	}
+
+	// Hanlder for processing update contact
+	@PostMapping("/process-update")
+	public String updateProcess(@Valid @ModelAttribute Contact contact, BindingResult result,
+			@RequestParam("image") MultipartFile file, Model model, Principal principal, HttpSession session) {
+		// we need id of contact too so will form a hidden input in the form
+		this.addUser(model, principal);
+
+		System.out.println(contact.getName());
+		System.out.println(contact.getcId());
+
+		try {
+
+			// if any validation is not satisfied
+			if (result.hasErrors()) {
+				model.addAttribute("contact", contact);
+				model.addAttribute("title", "Update Contact - " + contact.getName());
+				return "normal/update_contact";
+			}
+
+			// Get the old contact from database using the cId
+			Contact oldContactDetails = this.contactRepo.findById(contact.getcId()).get();
+
+			if (!file.isEmpty()) {
+
+				// Delete the old image if it is not contact.png
+				if (!oldContactDetails.getImageUrl().equals("contact.png")) {
+					File saveFile = new ClassPathResource("/static/images").getFile();
+
+					// get file name
+					String fileName = oldContactDetails.getImageUrl();
+
+					// make complete path of image
+					Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + fileName);
+					Files.delete(path);
+				}
+
+				// Add the new photo
+				String fileNameTemp = file.getOriginalFilename();
+				String fileName = fileNameTemp.substring(0, fileNameTemp.indexOf('.')) + contact.getcId()
+						+ fileNameTemp.substring(fileNameTemp.indexOf('.'));
+
+				// adding filename to database
+				contact.setImageUrl(fileName);
+
+				// get save folder name
+				File saveFile = new ClassPathResource("/static/images").getFile();
+
+				// make complete path of image
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + fileName);
+
+				// add file to images folder
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+			} else {
+				// if file is empty set old image url
+				contact.setImageUrl(oldContactDetails.getImageUrl());
+			}
+
+			// set user to new contact
+			contact.setUser(oldContactDetails.getUser());
+			// on showing contact_info page show this message too
+			session.setAttribute("message", new Message("Contact Updated Successfully", "alert-success"));
+			// update contact in database
+			this.contactRepo.save(contact);
+			return "redirect:/user/contact-info/" + contact.getcId();
+
+		} catch (Exception e) {
+			session.setAttribute("message", new Message("Something went wrong !!!" + e.getMessage(), "alert-danger"));
+			return "normal/update_contact";
+
+		}
 
 	}
 

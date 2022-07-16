@@ -13,6 +13,18 @@
 
 			<div class="card-body">
 
+				<!-- Alert for contact updated successfully -->
+				<div th:if="${session.message}"
+					th:classappend="${session.message.type}" class="alert" role="alert">
+					<p class="text-center" th:text="${session.message.content}"></p>
+					
+					
+					
+				
+
+					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+				</div>
+
 				<div class="container text-center">
 					<!-- Profile Image  -->
 					<img style="height: 200px; width: 200px;" class="profile_picture"
@@ -73,8 +85,14 @@
 
 					<!-- Buttons for update and delete contact -->
 					<div class="mt-4">
-						<a href="#" th:onclick="|deleteContact(${contact.cId})|" class="btn-outline-danger btn btn-md">Delete</a>
-						<button class="btn-warning btn btn-md">Update</button>
+						<a href="#" th:onclick="|deleteContact(${contact.cId})|"
+							class="btn-outline-danger btn btn-md btn-block">Delete</a>
+						<!-- If we directly click on this button it will send get request bound it inside a form for post request -->
+								<form class="mt-2" th:action="@{'/user/update-contact/'+${contact.cId}}" method="post">
+								
+								<button class="btn-warning btn btn-md btn-block">Update</button>
+								
+								</form>
 					</div>
 
 
