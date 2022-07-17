@@ -186,4 +186,104 @@ public class UtilityController {
 		}
 
 	}
+
+	// Handlers for user utility
+
+	// handler for updating user
+	@PostMapping("/update-user/{id}")
+	public String updateUserForm(@PathVariable("id") int id, Model model, Principal principal) {
+		User user = this.addUser(model, principal);
+
+		model.addAttribute("title", "Update User - " + user.getName());
+		model.addAttribute("user", user);
+
+		return "normal/update_user";
+	}
+
+	// Handler to process User Update form
+	@PostMapping("/process-update-user")
+	public String processUserUpdate(@Valid @ModelAttribute("user") User user, BindingResult result, Model model,
+			Principal principal, @RequestParam("image") MultipartFile file, HttpSession session) {
+		User oldUserDetails = this.addUser(model, principal);
+
+		try {
+
+			// if there is validation error in the update form
+			if (result.hasErrors()) {
+				model.addAttribute("user", user);
+				model.addAttribute("title", "Update User - " + user.getName());
+				System.out.println("valid error");
+				return "normal/update_user";
+			}
+
+			// if the image file is empty keep the old file else change the file
+			if (!file.isEmpty()) {
+
+				// Delete the old image if it is not user.png
+				if (!oldUserDetails.getImageUrl().equals("user.png")) {
+					File saveFile = new ClassPathResource("/static/images/user").getFile();
+
+					// get file name
+					String fileName = oldUserDetails.getImageUrl();
+
+					// make complete path of image
+					Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + fileName);
+					Files.delete(path);
+				}
+
+				// Add the new photo
+				String fileNameTemp = file.getOriginalFilename();
+				String fileName = fileNameTemp.substring(0, fileNameTemp.indexOf('.')) + user.getId()
+						+ fileNameTemp.substring(fileNameTemp.indexOf('.'));
+
+				// adding filename to database
+				user.setImageUrl(fileName);
+
+				// get save folder name
+				File saveFile = new ClassPathResource("/static/images/user").getFile();
+
+				// make complete path of image
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + fileName);
+
+				// add file to images folder
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+			} else {
+				// if file is empty set old image url
+				user.setImageUrl(oldUserDetails.getImageUrl());
+			}
+
+			// Bidirectionally change all the user and contacts contact and user
+			// respectively
+			for (Contact c : oldUserDetails.getContacts()) {
+				c.setUser(user);
+				user.getContacts().add(c);
+			}
+
+			System.out.print(user);
+
+			// on showing profile page show this message too
+			session.setAttribute("message", new Message("User Updated Successfully", "alert-success"));
+
+			// update user in database
+			this.repo.save(user);
+
+			// set title and user for profile page
+			model.addAttribute("title", user.getName());
+			model.addAttribute("user", user);
+
+			System.out.println(principal.getName());
+
+			return "/normal/profile";
+
+		} catch (Exception e) {
+
+			session.setAttribute("message", new Message("Something went wrong!!!" + e.getMessage(), "alert-danger"));
+			System.out.println("error");
+			e.printStackTrace();
+			return "normal/update_user";
+		}
+
+	}
+
 }
