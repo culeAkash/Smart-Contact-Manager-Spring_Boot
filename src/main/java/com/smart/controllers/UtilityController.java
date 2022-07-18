@@ -220,7 +220,7 @@ public class UtilityController {
 			if (!file.isEmpty()) {
 
 				// Delete the old image if it is not user.png
-				if (!oldUserDetails.getImageUrl().equals("user.png")) {
+				if (oldUserDetails.getImageUrl() != null && !oldUserDetails.getImageUrl().equals("user.png")) {
 					File saveFile = new ClassPathResource("/static/images/user").getFile();
 
 					// get file name
@@ -260,6 +260,11 @@ public class UtilityController {
 				user.getContacts().add(c);
 			}
 
+			if (!user.getEmail().equals(oldUserDetails.getEmail())) {
+				this.repo.save(user);
+				return "redirect:/signin";
+			} // if there is change of email then principal also changes hence have to login
+				// else no login required
 			System.out.print(user);
 
 			// on showing profile page show this message too

@@ -41,8 +41,8 @@
 
 							<!-- ID -->
 							<tr>
-								<th scope="col">#ID</th>
-								<th scope="col" th:text="${'SCM2022USER'+user.id}">First</th>
+								<th scope="col" style="width:3000px">#ID</th>
+								<th scope="col" style="width:3000px" th:text="${'SCM2022'+user.id}">First</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -53,13 +53,23 @@
 								<td th:text="${user.email}"></td>
 							</tr>
 
-							<!-- Role -->
+
+							<!-- ROLE -->
 							<tr>
 								<th scope="row">Role</th>
 								<td th:text="${user.role}"></td>
 							</tr>
+							
+							<!-- Enabled -->
+							<tr>
+								<th scope="row">Status</th>
+								<td th:classAppend="${user.enabled ? 'text-success' :'text-danger'}" th:text="${user.enabled ? 'Active' : 'InActive'}"></td>
+							</tr>
+							
+							
+							
 
-
+							
 						</tbody>
 
 
@@ -85,7 +95,7 @@
 							method="post">
 
 							<button class="btn-warning btn btn-md btn-block">Update
-								User</button>
+								</button>
 
 						</form>
 
