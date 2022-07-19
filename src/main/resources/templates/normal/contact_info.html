@@ -15,12 +15,16 @@
 
 				<!-- Alert for contact updated successfully -->
 				<div th:if="${session.message}"
-					th:classappend="${session.message.type}" class="alert" role="alert">
+					th:classappend="${session.message.type}"
+					class="alert alert-dismissible fade show" role="alert ">
 					<p class="text-center" th:text="${session.message.content}"></p>
-					
-					
-					
-				
+
+
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+
 
 					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
 				</div>
@@ -44,7 +48,7 @@
 							<!-- ID -->
 							<tr>
 								<th scope="col">#ID</th>
-								<th scope="col" th:text="${'SCM2022'+contact.cId}">First</th>
+								<th scope="col" th:text="${'SCM2022CONTACT'+contact.cId}">First</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -88,11 +92,13 @@
 						<a href="#" th:onclick="|deleteContact(${contact.cId})|"
 							class="btn-outline-danger btn btn-md btn-block">Delete</a>
 						<!-- If we directly click on this button it will send get request bound it inside a form for post request -->
-								<form class="mt-2" th:action="@{'/user/update-contact/'+${contact.cId}}" method="post">
-								
-								<button class="btn-warning btn btn-md btn-block">Update</button>
-								
-								</form>
+						<form class="mt-2"
+							th:action="@{'/user/update-contact/'+${contact.cId}}"
+							method="post">
+
+							<button class="btn-warning btn btn-md btn-block">Update</button>
+
+						</form>
 					</div>
 
 

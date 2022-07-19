@@ -53,8 +53,11 @@ public class MyConfig extends WebSecurityConfigurerAdapter {
 				.and().formLogin().loginPage("/signin")// role decision will be form based login,and added custom login
 														// page
 				.loginProcessingUrl("/dologin").defaultSuccessUrl("/user/profile")// successfull url login page redirect
+				.and().logout().deleteCookies("remember-me").permitAll().and().rememberMe().tokenValiditySeconds(300)
 //				.failureUrl("/login-fail")// login failure page
-				.and().csrf().disable();// csrf disabled
+				.and().csrf().disable()
+
+		;// csrf disabled
 		;
 	}
 

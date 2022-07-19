@@ -291,4 +291,43 @@ public class UtilityController {
 
 	}
 
+	// Handler to delete User Account
+	@GetMapping("/delete-user")
+	public String deleteUser(Principal principal, HttpSession session, Model model) {
+		// Get user from principal
+		User user = this.repo.getUserByUserName(principal.getName());
+
+		try {
+
+			// delete user image
+			if (user.getImageUrl() != null && !user.getImageUrl().equals("user.png")) {
+				File saveFile = new ClassPathResource("/static/images/user").getFile();
+
+				// get file name
+				String fileName = user.getImageUrl();
+
+				// make complete path of image
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + fileName);
+				Files.delete(path);
+			}
+
+			// delete all contacts of the user
+			for (Contact c : user.getContacts()) {
+				this.contactRepo.delete(c);
+			}
+
+			this.repo.delete(user);
+
+			return "redirect:/logout";
+
+		} catch (Exception e) {
+			session.setAttribute("message", new Message("Something went wrong!!!" + e.getMessage(), "alert-danger"));
+			e.printStackTrace();
+			model.addAttribute("user", user);
+			model.addAttribute("title", user.getName());
+			return "normal/profile";
+		}
+
+	}
+
 }

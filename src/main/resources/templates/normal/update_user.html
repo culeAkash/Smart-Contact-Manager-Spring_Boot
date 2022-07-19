@@ -15,16 +15,22 @@
 			<div class="card-body">
 
 				<div th:if="${session.message}"
-					th:classappend="${session.message.type}" class="alert" role="alert">
+					th:classappend="${session.message.type}" class="alert alert-dismissible fade show" role="alert">
 					<p class="text-center" th:text="${session.message.content}"></p>
 
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 
 					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
 
 				</div>
 
 				<h1 class="text-center">Update User</h1>
-				<p class="text-center text-secondary" style="color:#009688 !important;"> Updating your Credentials(email), you have to login again</p>
+				<p class="text-center text-secondary"
+					style="color: #009688 !important;">Updating your
+					Credentials(email), you have to login again</p>
 
 				<div class="container-fluid mt-1">
 

@@ -13,9 +13,14 @@
 			<div class="card-body">
 
 				<div th:if="${session.message}"
-					th:classappend="${session.message.type}" class="alert" role="alert">
+					th:classappend="${session.message.type}" class="alert alert-dismissible fade show"
+					role="alert">
 					<p class="text-center" th:text="${session.message.content}"></p>
-					
+
+					<button type="button" class="close" data-dismiss="alert"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 
 					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
 
@@ -112,10 +117,10 @@
 									</div>
 
 									<input type="text" name="work" placeholder="Enter Work here"
-										class="form-control" 
+										class="form-control"
 										th:classappend="${#fields.hasErrors('work') ? 'is-invalid' : ''}"
 										th:value=${contact.work} />
-										
+
 									<div class="invalid-feedback"
 										th:each="e: ${#fields.errors('work')}" th:text=${e}></div>
 
@@ -150,8 +155,8 @@
 								<!-- Description field -->
 								<div class="form-group mt-3">
 
-									<textarea id="mytextarea" rows="10" name="description" class="form-control"
-										placeholder="Enter Contact Description"></textarea>
+									<textarea id="mytextarea" rows="10" name="description"
+										class="form-control" placeholder="Enter Contact Description"></textarea>
 
 								</div>
 

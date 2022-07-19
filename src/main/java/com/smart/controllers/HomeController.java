@@ -89,9 +89,10 @@ public class HomeController {
 //			System.out.println("Agreement: "+agreement);
 //			System.out.println(user);
 			model.addAttribute("user", new User());
-			session.setAttribute("message", new Message("Registration Successful", "alert-success"));// if registation
-																										// successfull
-			return "signup";
+			session.setAttribute("message", new Message("Registration Successful - Please Login", "alert-success"));// if
+																													// registation
+			// successfull
+			return "login";
 		} catch (Exception e) {
 			model.addAttribute("user", user);
 			session.setAttribute("message", new Message("Something went wrong!!! " + e.getMessage(), "alert-danger"));// exception

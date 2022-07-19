@@ -34,13 +34,16 @@
 				
 				<!-- If deleting is done then this message is shown -->
 				<div th:if="${session.delete}"
-					th:classappend="${session.delete.type}" class="alert" role="alert">
+					th:classappend="${session.delete.type}" class="alert alert-dismissible fade show" role="alert">
 
 					<div class="text-center">
 						<span th:text="${session.delete.content}"> </span>
 					</div>
 
-
+					<button type="button" class="close" data-dismiss="alert"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
 
 					<th:block th:text="${#session.removeAttribute('delete')}"></th:block>
 				</div>
@@ -49,7 +52,7 @@
 				
 				<!-- contact table -->
 
-				<table th:if="${block==false}" class="table">
+				<table th:if="${block==false}" class="table table-hover">
 					<thead>
 						<tr>
 							<th scope="col">#ID</th>
@@ -66,7 +69,7 @@
 						<!-- loop lagake yeh tr ko repeat karenge jitna contact h user ka -->
 						<tr th:each="c: ${contacts}">
 						
-							<th scope="row" th:text="${'SCM2022'+c.cId}">1</th>
+							<th scope="row" th:text="${'SCM2022CONTACT'+c.cId}">1</th>
 							
 							<!-- Now showing contacts images -->
 							<td >
