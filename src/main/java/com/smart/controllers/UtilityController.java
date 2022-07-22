@@ -273,13 +273,9 @@ public class UtilityController {
 			// update user in database
 			this.repo.save(user);
 
-			// set title and user for profile page
-			model.addAttribute("title", user.getName());
-			model.addAttribute("user", user);
-
 			System.out.println(principal.getName());
 
-			return "/normal/profile";
+			return "redirect:/user/profile";
 
 		} catch (Exception e) {
 

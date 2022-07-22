@@ -110,3 +110,9 @@ body{
 	border-radius: 50%;
 	margin-right: 3px;
 }
+
+/*CSS for active navbar*/
+.active{
+	background: #009688 !important;
+	color: white !important;
+}
