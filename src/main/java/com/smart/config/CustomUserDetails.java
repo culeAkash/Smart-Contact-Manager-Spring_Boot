@@ -1,5 +1,6 @@
 package com.smart.config;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,7 +24,10 @@ public class CustomUserDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// return collection of authorities given to the user
 		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(this.user.getRole());
-		return List.of(simpleGrantedAuthority);
+		List<SimpleGrantedAuthority> list = new ArrayList<SimpleGrantedAuthority>();
+		list.add(simpleGrantedAuthority);
+
+		return list;
 	}
 
 	@Override
