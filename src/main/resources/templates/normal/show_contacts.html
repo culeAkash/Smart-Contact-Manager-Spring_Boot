@@ -15,8 +15,8 @@
 
 				<!-- table me hmlog name(nickname),email,phone number,image aur id dikhayenge -->
 
-				<div th:if="${block==true}"
-					th:classappend="${session.message.type}" class="alert" role="alert">
+				<div th:if="${block==true}" th:classappend="${session.message.type}"
+					class="alert" role="alert">
 
 					<div class="text-center">
 						<span th:text="${session.message.content}"> </span><span><a
@@ -30,87 +30,86 @@
 
 					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
 				</div>
-				
-				
+
+
 				<!-- If deleting is done then this message is shown -->
 				<div th:if="${session.delete}"
-					th:classappend="${session.delete.type}" class="alert alert-dismissible fade show" role="alert">
+					th:classappend="${session.delete.type}"
+					class="alert alert-dismissible fade show" role="alert">
 
 					<div class="text-center">
 						<span th:text="${session.delete.content}"> </span>
 					</div>
 
 					<button type="button" class="close" data-dismiss="alert"
-										aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 
 					<th:block th:text="${#session.removeAttribute('delete')}"></th:block>
 				</div>
-				
-				
-				
+
+
+
 				<!-- contact table -->
 
-				<table th:if="${block==false}" class="table table-hover">
-					<thead>
-						<tr>
-							<th scope="col">#ID</th>
-							<th scope="col">Name</th>
-							<th scope="col">Email</th>
-							<th scope="col">Phone</th>
-							<th scope="col">Action</th>
-						</tr>
-					</thead>
-					<tbody>
+				<!-- Make table responsive using bootstrap -->
+				<div class="table-responsive">
+					<table th:if="${block==false}" class="table table-hover">
+						<thead>
+							<tr>
+								<th scope="col">#ID</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Phone</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody>
 
 
 
-						<!-- loop lagake yeh tr ko repeat karenge jitna contact h user ka -->
-						<tr th:each="c: ${contacts}">
-						
-							<th scope="row" th:text="${'SCM2022CONTACT'+c.cId}">1</th>
-							
-							<!-- Now showing contacts images -->
-							<td >
-							<!-- Add image here -->
-							<!-- Have to resize the image -->
-							<img class="profile_picture" th:src="@{'/images/' + ${c.imageUrl}}" alt="Profile Picture" />
-							
-							<!-- Showing info about specific contact now -->
-							<a th:href="@{'/user/contact-info/'+${c.cId}}"><span th:text="${c.name+'('+c.nickName+')'}"></span></a>
-							
-							
-							
-							</td>
-							
-							
-							<td th:text="${c.email}">Otto</td>
-							
-							
-							<td th:text="${c.phone}">@mdo</td>
-							<td>
-								<!-- Action me 2 button rahega delete aur edit ke liye  -->
-								
-								
-								<!-- Now we will add delete functionality of a contact  th:href="@{'/user/delete-contact/'+${c.cId}}"-->
-								<!-- In order to send data to a js function using thymeleaf use || -->
-								<a href="#" th:onclick="|deleteContact(${c.cId})|" class="btn-outline-danger btn btn-sm">Delete</a>
-								
-								
-								<!-- If we directly click on this button it will send get request bound it inside a form for post request -->
-								<form class="mt-2" th:action="@{'/user/update-contact/'+${c.cId}}" method="post">
-								
-								<button class="btn-warning btn btn-sm">Update</button>
-								
-								</form>								
-								
+							<!-- loop lagake yeh tr ko repeat karenge jitna contact h user ka -->
+							<tr th:each="c: ${contacts}">
+
+								<th scope="row" th:text="${'SCM2022CONTACT'+c.cId}">1</th>
+
+								<!-- Now showing contacts images -->
+								<td>
+									<!-- Add image here --> <!-- Have to resize the image --> <img
+									class="profile_picture" th:src="@{'/images/' + ${c.imageUrl}}"
+									alt="Profile Picture" /> <!-- Showing info about specific contact now -->
+									<a th:href="@{'/user/contact-info/'+${c.cId}}"><span
+										th:text="${c.name+'('+c.nickName+')'}"></span></a>
 
 
-							</td>
-						</tr>
-					</tbody>
-				</table>
+
+								</td>
+
+
+								<td th:text="${c.email}">Otto</td>
+
+
+								<td th:text="${c.phone}">@mdo</td>
+								<td>
+									<!-- Action me 2 button rahega delete aur edit ke liye  --> <!-- Now we will add delete functionality of a contact  th:href="@{'/user/delete-contact/'+${c.cId}}"-->
+									<!-- In order to send data to a js function using thymeleaf use || -->
+									<a href="#" th:onclick="|deleteContact(${c.cId})|"
+									class="btn-outline-danger btn btn-sm">Delete</a> <!-- If we directly click on this button it will send get request bound it inside a form for post request -->
+									<form class="mt-2"
+										th:action="@{'/user/update-contact/'+${c.cId}}" method="post">
+
+										<button class="btn-warning btn btn-sm">Update</button>
+
+									</form>
+
+
+
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
 				<!-- Pagination ka part -->
 				<!-- from backend we have two additional info here
@@ -121,17 +120,24 @@
 
 					<ul class="pagination">
 
-						<li th:if="${currentPage!=0}" class="page-item"><a class="page-link" th:href="@{'/user/show-contacts/'+${currentPage-1}}">Previous</a></li><!-- If current page is zero dont show previous -->
+						<li th:if="${currentPage!=0}" class="page-item"><a
+							class="page-link"
+							th:href="@{'/user/show-contacts/'+${currentPage-1}}">Previous</a></li>
+						<!-- If current page is zero dont show previous -->
 
 						<li class="page-item"
 							th:each="i : ${#numbers.sequence(1,totalPages)}"
 							th:classAppend="${i-1==currentPage ? 'active' : ''}"><a
 							class="page-link" th:href="@{'/user/show-contacts/'+${i-1}}"><span
-								th:text="${i}"></span></a></li><!-- Starting from one to totalPages links are added -->
-								<!-- Current page will get highlighted -->
-								<!-- On clicking a page number that page will be visible -->
+								th:text="${i}"></span></a></li>
+						<!-- Starting from one to totalPages links are added -->
+						<!-- Current page will get highlighted -->
+						<!-- On clicking a page number that page will be visible -->
 
-						<li th:if="${currentPage+1!=totalPages}" class="page-item" ><a class="page-link" th:href="@{'/user/show-contacts/'+${currentPage+1}}">Next</a></li><!-- If the current page is 0 and totalPages are 1 then dont show -->
+						<li th:if="${currentPage+1!=totalPages}" class="page-item"><a
+							class="page-link"
+							th:href="@{'/user/show-contacts/'+${currentPage+1}}">Next</a></li>
+						<!-- If the current page is 0 and totalPages are 1 then dont show -->
 						<!-- Show only when curreentPage + 1 is not equal to totalPages -->
 					</ul>
 				</nav>
@@ -139,8 +145,18 @@
 			</div>
 
 		</div>
+
+
+		<script>
+		//delete from all other links and add to this link
+		$(document).ready(()=>{
+				$('.item').removeClass('active');
+				$('#con-link').addClass('active');
+			})
+			</script>
+
 	</section>
-	
-	</script>
+
+
 </body>
 </html>

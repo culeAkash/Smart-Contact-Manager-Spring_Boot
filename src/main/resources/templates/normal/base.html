@@ -23,6 +23,9 @@
 <!-- Connectd personal CSS -->
 
 <title th:text="${title}">Base page</title>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
 </head>
 <body>
 
@@ -60,15 +63,15 @@
 		<span onclick="toggleSidebar()" class="cross-btn">&times;</span>
 		<!-- toggle is called when clicked -->
 
-		<a th:href="@{/user/index}" class="item"> <i class="fas fa-home"
+		<a id="home-link" th:href="@{/user/index}" class="item"> <i class="fas fa-home"
 			aria-hidden="true"></i> Home
-		</a> <a th:href="@{/user/show-contacts/0}" class="item"> <i
+		</a> <a id="con-link" th:href="@{/user/show-contacts/0}" class="item"> <i
 			class="fa fa-id-card-alt" aria-hidden="true"></i> View Contacts
-		</a> <a th:href="@{/user/add-contact}" class="item"> <i
+		</a> <a id="add-link" th:href="@{/user/add-contact}" class="item"> <i
 			class="fa fa-pencil-alt" aria-hidden="true"></i> Add Contact
-		</a> <a th:href="@{/user/profile}" class="item"> <i
+		</a> <a id="prof-link" th:href="@{/user/profile}" class="item"> <i
 			class="fa fa-user-circle" aria-hidden="true"></i> Your Profile
-		</a>  <a th:href="@{/logout}" class="item"> <i
+		</a>  <a id="out-link" th:href="@{/logout}" class="item"> <i
 			class="fa fa-sign-out-alt" aria-hidden="true"></i> Logout
 		</a>
 		<div class="divider"></div>
@@ -101,7 +104,7 @@
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script

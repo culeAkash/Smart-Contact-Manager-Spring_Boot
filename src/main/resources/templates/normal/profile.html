@@ -40,52 +40,53 @@
 
 					</h3>
 
+					<div class="table-responsive">
+						<table class="table mt-4">
+							<thead>
 
-					<table class="table mt-4">
-						<thead>
+								<!-- ID -->
+								<tr>
+									<th scope="col" style="width: 3000px">#ID</th>
+									<th scope="col" style="width: 3000px"
+										th:text="${'SCM2022USER'+user.id}">First</th>
+								</tr>
+							</thead>
+							<tbody>
 
-							<!-- ID -->
-							<tr>
-								<th scope="col" style="width: 3000px">#ID</th>
-								<th scope="col" style="width: 3000px"
-									th:text="${'SCM2022USER'+user.id}">First</th>
-							</tr>
-						</thead>
-						<tbody>
-
-							<!-- Email -->
-							<tr>
-								<th scope="row">Email</th>
-								<td th:text="${user.email}"></td>
-							</tr>
-
-
-							<!-- ROLE -->
-							<tr>
-								<th scope="row">Role</th>
-								<td th:text="${user.role}"></td>
-							</tr>
-
-							<!-- Enabled -->
-							<tr>
-								<th scope="row">Status</th>
-								<td
-									th:classAppend="${user.enabled ? 'text-success' :'text-danger'}"
-									th:text="${user.enabled ? 'Active' : 'InActive'}"></td>
-							</tr>
+								<!-- Email -->
+								<tr>
+									<th scope="row">Email</th>
+									<td th:text="${user.email}"></td>
+								</tr>
 
 
+								<!-- ROLE -->
+								<tr>
+									<th scope="row">Role</th>
+									<td th:text="${user.role}"></td>
+								</tr>
 
-
-
-						</tbody>
+								<!-- Enabled -->
+								<tr>
+									<th scope="row">Status</th>
+									<td
+										th:classAppend="${user.enabled ? 'text-success' :'text-danger'}"
+										th:text="${user.enabled ? 'Active' : 'InActive'}"></td>
+								</tr>
 
 
 
 
 
+							</tbody>
 
-					</table>
+
+
+
+
+
+						</table>
+					</div>
 
 
 					<!-- Description -->
@@ -109,7 +110,8 @@
 
 						<form th:action="@{/user/delete-user}" class="mt-2" method="post">
 							<a href="#" th:onclick="|deleteUser()|"
-								class="btn-outline-danger btn btn-md btn-block">Deactive Account</a>
+								class="btn-outline-danger btn btn-md btn-block">Deactive
+								Account</a>
 						</form>
 					</div>
 
@@ -120,7 +122,13 @@
 
 		</div>
 
-
+		<script>
+		//delete from all other links and add to this link
+		$(document).ready(()=>{
+				$('.item').removeClass('active');
+				$('#prof-link').addClass('active');
+			})
+			</script>
 
 
 	</section>
